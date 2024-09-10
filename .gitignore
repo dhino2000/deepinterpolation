@@ -60,3 +60,5 @@ docs/_build/
 sample_data/
 examples/
 suite2p/
+AutoDIPRun/input/*
+AutoDIPRun/output/*
