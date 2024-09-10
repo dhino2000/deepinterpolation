@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 with open("README.rst", encoding='utf-8') as f:
     readme = f.read()
 
-with open("LICENSE") as f:
+with open("LICENSE", encoding='utf-8') as f:
     license = f.read()
 
 with open("requirements.txt", "r") as f:

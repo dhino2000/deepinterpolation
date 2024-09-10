@@ -16,12 +16,7 @@ if __name__ == '__main__':
     # No steps necessary for inference as epochs are not relevant.
     # -1 deactivate it.
 
-    generator_param["train_path"] = os.path.join(
-        pathlib.Path(__file__).parent.absolute(),
-        "..",
-        "sample_data",
-        "ophys_tiny_761605196.tif",
-    )
+    generator_param["train_path"] = "D:/deepinterpolation/sample_data/ophys_tiny_761605196.tif"
 
     generator_param["batch_size"] = 5
     generator_param["start_frame"] = 0
@@ -35,14 +30,12 @@ if __name__ == '__main__':
     # Replace this path to where you stored your model
     inference_param[
         "model_path"
-    ] = r"/Users/jerome.lecoq/Dropbox/DO NOT DELETE/Deepinterpolation-" \
-        + r"Models/deep_interpolation_ai93_v1_1/2019_09_11_23_32_unet_" \
-        + r"single_1024_mean_absolute_error_Ai93-0450.h5"
+    ] = "D:/deepinterpolation/examples/models/2019_09_11_23_32_unet_single_1024_mean_absolute_error_Ai93-0450.h5"
 
     # Replace this path to where you want to store your output file
     inference_param[
         "output_file"
-    ] = "./ophys_tiny_continuous_deep_interpolation.h5"
+    ] = "D:/deepinterpolation/examples/outputs/ophys_tiny_continuous_deep_interpolation.h5"
 
     jobdir = "./"
 
