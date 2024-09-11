@@ -797,8 +797,16 @@ class SingleTifGenerator(SequentialGenerator):
 
         self.raw_data_file = self.json_data["train_path"]
 
+        # 修正 for suite2p regtif 500 frames
         with tifffile.TiffFile(self.raw_data_file) as tif:
-            self.raw_data = tif.asarray()
+            pages = tif.pages
+            images = [page.asarray() for page in pages]
+            # すべての画像を1つの配列にスタック
+            stack = np.stack(images)
+            self.raw_data = stack
+
+        # with tifffile.TiffFile(self.raw_data_file) as tif:
+        #     self.raw_data = tif.asarray()
 
         self.total_frame_per_movie = self.raw_data.shape[0]
 
