@@ -5,6 +5,7 @@ dir_notebook = os.path.dirname(os.path.abspath("__file__"))
 dir_parent = os.path.dirname(dir_notebook)
 if not dir_parent in sys.path:
     sys.path.append(dir_parent)
+os.chdir(dir_parent)
 from deepinterpolation.inference_collection import core_inference
 from deepinterpolation.generator_collection import SingleTifGenerator
 import tkinter.filedialog 
