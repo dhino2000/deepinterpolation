@@ -149,8 +149,9 @@ class AutoDIPRun(QMainWindow):
         generator_param["randomize"] = 0
 
         # 推論のパラメータ設定
-        inference_param["model_path"] = "D:/deepinterpolation/examples/models/2019_09_11_23_32_unet_single_1024_mean_absolute_error_Ai93-0450.h5"
+        # inference_param["model_path"] = "D:/deepinterpolation/examples/models/2019_09_11_23_32_unet_single_1024_mean_absolute_error_Ai93-0450.h5"
         # inference_param["model_path"] = "D:/deepinterpolation/examples/unet_single_1024_mean_absolute_error_2024_10_16_14_42_2024_10_16_14_42/2024_10_16_14_42_unet_single_1024_mean_absolute_error_2024_10_16_14_42_model.h5"
+        inference_param["model_path"] = "D:/deepinterpolation/examples/unet_single_1024_mean_absolute_error_2024_10_22_16_49_2024_10_22_16_49/unet_single_1024_mean_absolute_error_2024_10_22_16_49_2024_10_22_16_49.h5"
 
         inference_param["output_file"] = self.path_output.replace(".tif", ".h5")
         self.path_output_h5 = inference_param["output_file"]
