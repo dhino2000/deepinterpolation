@@ -62,4 +62,5 @@ examples/
 suite2p/
 AutoDIPRun/input/*
 AutoDIPRun/output/*
+notebook/models/*
 *.tif
