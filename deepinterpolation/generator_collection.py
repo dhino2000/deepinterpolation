@@ -7,6 +7,7 @@ import tifffile
 import nibabel as nib
 import glob
 import math
+from natsort import natsorted
 
 
 class MaxRetryException(Exception):
@@ -654,17 +655,26 @@ class MultiContinuousTifGenerator(SequentialGenerator):
             os.path.join(self.raw_data_file, '*.tif'))
 
         # We sort the list to make sure we are alphabetical
-        self.list_tif_files.sort()
+        # self.list_tif_files.sort()
+        # suite2pの500枚スタック用
+        self.list_tif_files = natsorted(self.list_tif_files)
 
         self.list_raw_data = []
         self.total_frame_per_movie = 0
         self.list_bounds = [0]
         for indiv_tif in self.list_tif_files:
             with tifffile.TiffFile(indiv_tif) as tif:
-                local_raw_data = tif.asarray()
+                # 修正 for suite2p regtif 500 frames
+                pages = tif.pages
+                images = [page.asarray() for page in pages]
+                # すべての画像を1つの配列にスタック
+                stack = np.stack(images)
+                local_raw_data = stack
                 self.list_raw_data.append(local_raw_data)
                 self.total_frame_per_movie += local_raw_data.shape[0]
                 self.list_bounds.append(self.total_frame_per_movie)
+
+        print(self.list_tif_files)
 
         self.list_bounds = np.array(self.list_bounds)
 
@@ -795,15 +805,28 @@ class SingleTifGenerator(SequentialGenerator):
         "Initialization"
         super().__init__(generator_param)
 
+
+        # suite2pのパイプラインに組み込むために修正
+        # tiffファイルのリストを読み込む
         self.raw_data_file = self.json_data["train_path"]
+        self.list_tif_files = glob.glob(
+            os.path.join(self.raw_data_file, '*.tif'))
+        # ソート
+        self.list_tif_files = natsorted(self.list_tif_files)
+        print("Input tif files: ", self.list_tif_files)
 
         # 修正 for suite2p regtif 500 frames
-        with tifffile.TiffFile(self.raw_data_file) as tif:
-            pages = tif.pages
-            images = [page.asarray() for page in pages]
-            # すべての画像を1つの配列にスタック
-            stack = np.stack(images)
-            self.raw_data = stack
+        all_stack = []
+        for tif_file in self.list_tif_files:
+            with tifffile.TiffFile(tif_file) as tif:
+                pages = tif.pages
+                images = [page.asarray() for page in pages]
+                # すべての画像を1つの配列にスタック
+                stack = np.stack(images)
+                all_stack.append(stack)
+        self.raw_data = np.concatenate(all_stack, axis=0)
+
+        print("Raw data shape: ", self.raw_data.shape)
 
         # with tifffile.TiffFile(self.raw_data_file) as tif:
         #     self.raw_data = tif.asarray()
